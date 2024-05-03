@@ -18,7 +18,7 @@ public class Jump : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !jumping)
+        if (Input.GetKeyDown(KeyCode.W) && !jumping)
         {
             jumping = true;
             currentJumpHeight = 0f; // Сбрасываем текущую высоту прыжка
