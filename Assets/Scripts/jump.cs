@@ -2,29 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class jump : MonoBehaviour
+public class Jump : MonoBehaviour
 {
-private bool jumping = false;
+    private bool jumping = false;
+    private float initialYPosition;
+    private float currentJumpHeight = 0f;
     public float gravity = 0.5f;
-    public float jumpHeight = 10f;
+    public float jumpForce = 10f;
     public float groundLevel = 0f;
+
+    private void Start()
+    {
+        initialYPosition = transform.position.y;
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !jumping)
         {
             jumping = true;
+            currentJumpHeight = 0f; // Сбрасываем текущую высоту прыжка
         }
 
         if (jumping)
         {
-            transform.Translate(Vector3.up * jumpHeight * Time.deltaTime);
-            jumpHeight -= gravity;
-            if (transform.position.y <= groundLevel)
+            currentJumpHeight += jumpForce * Time.deltaTime; // Увеличиваем текущую высоту прыжка
+            float newYPosition = initialYPosition + currentJumpHeight;
+            transform.position = new Vector3(transform.position.x, newYPosition, transform.position.z);
+
+            jumpForce -= gravity;
+
+            if (currentJumpHeight <= 0f)
             {
-                transform.position = new Vector3(transform.position.x, groundLevel, transform.position.z);
                 jumping = false;
-                jumpHeight = 10f;
+                jumpForce = 10f; // Сбрасываем силу прыжка
             }
         }
     }
